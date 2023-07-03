@@ -1,16 +1,19 @@
-﻿namespace SakerEnd.Services.DeviceService
+﻿using SakerEnd.Model;
+
+namespace SakerEnd.Services.DeviceService
 {
-    public class DeviceService : IDeviceService
+    public class DeviceService
     {
-        List<Device> _devices;
+        public List<Device> Devices;
 
         public DeviceService()
         {
-            _devices = new();    
+            Devices = new();    
         }
         public void RegisterDevice(ConfigurationDto dto)
         {
             var device = new Device(dto.IP, dto.Port);
+            Devices.Add(device);
             var config = DeviceMessageBuilder.GetDeviceConfiguration(dto);
             device.Client.BegindoDeviceConfiguration(config, asyncResult =>
             {

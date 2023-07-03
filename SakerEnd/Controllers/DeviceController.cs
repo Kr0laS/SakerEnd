@@ -9,10 +9,10 @@ namespace SakerEnd.Controllers
     public class DeviceController : ControllerBase
     {
         private IValidationService _validationService;
-        private IDeviceService _deviceService;
+        private DeviceService _deviceService;
 
         public DeviceController(IValidationService validationService,
-            IDeviceService deviceService)
+            DeviceService deviceService)
         {
             _validationService = validationService;
             _deviceService = deviceService;

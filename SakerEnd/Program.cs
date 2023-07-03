@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<MarsImplamentation>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
-builder.Services.AddSingleton<IDeviceService,DeviceService>();
+builder.Services.AddSingleton<DeviceService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

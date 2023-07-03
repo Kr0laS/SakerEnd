@@ -12,6 +12,8 @@ namespace SakerEnd.Model
                 new EndpointAddress($"http://{IP}:{Port}/SNSR_STD-SOAP"));
         }
 
+        public DeviceConfiguration Configuration { get; set; }
+
         public string Name { get; set; } = string.Empty;
 
         public string IP { get; private set; }
