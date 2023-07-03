@@ -1,7 +1,14 @@
-﻿namespace SakerEnd
+﻿using SakerEnd.Services.DeviceService;
+
+namespace SakerEnd
 {
     public class MarsImplamentation : SNSR_STDSOAPPort
     {
+        private IDeviceService _deviceService;
+        public MarsImplamentation(IDeviceService deviceService)
+        {
+            _deviceService = deviceService;
+        }
         public IAsyncResult BegindoCommandMessage(doCommandMessageRequest request, AsyncCallback callback, object asyncState)
         {
             throw new NotImplementedException();

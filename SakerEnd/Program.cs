@@ -1,6 +1,8 @@
 using CoreWCF;
 using CoreWCF.Configuration;
-using SakerEnd;
+using Microsoft.AspNetCore.Identity;
+using SakerEnd.Services.DeviceService;
+using SakerEnd.Services.ValidationService;
 using System.Web.Services.Description;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,11 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServiceModelServices();
 builder.Services.AddControllers();
+
+builder.Services.AddSingleton<MarsImplamentation>();
+builder.Services.AddScoped<IValidationService, ValidationService>();
+builder.Services.AddSingleton<IDeviceService,DeviceService>();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<MarsImplamentation>();
 
 var app = builder.Build();
 
