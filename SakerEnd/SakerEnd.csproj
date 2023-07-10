@@ -17,13 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Elbit.Mrs.SnsrSTD.C4IApp">
-      <HintPath>C:\Users\balte\Desktop\IntroSensors\Elbit.Mrs.SnsrSTD.C4IApp.dll</HintPath>
-    </Reference>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
+    <Reference Include="WCFSensorsLib">
+      <HintPath>C:\Users\balte\source\repos\WCFSensorsLib\WCFSensorsLib\bin\Debug\WCFSensorsLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
