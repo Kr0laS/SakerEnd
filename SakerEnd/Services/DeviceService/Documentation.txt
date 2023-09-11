@@ -1,0 +1,8 @@
+﻿A bit of documentaion: 
+
+this server acts as a middle man between the client and the devices. 
+
+when a user wants to start interacting with devices, he is going to send http req to this api, this http req will translate to a
+configuration => subscription => status report => response to the user of the status report in the http requst.
+after this proccess the device is going to send all sorts of devices status reports to the user, my program will send him to the signalR hub which will
+Real-Time notify the front end about the new reports.

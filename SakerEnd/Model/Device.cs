@@ -23,5 +23,7 @@ namespace SakerEnd.Model
         public SNSR_STDSOAPPortClient Client { get; private set; }
 
         public DeviceIdentificationType IdentificationType { get; set; }
+
+        public DeviceStatusReport DeviceStatusReport { get; set; }
     }
 }

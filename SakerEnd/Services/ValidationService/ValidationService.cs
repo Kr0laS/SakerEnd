@@ -1,23 +1,29 @@
 ﻿using SakerEnd.Model;
 using System.Net;
+using System.Net.Sockets;
 
-namespace SakerEnd.Services.ValidationService
+namespace SakerEnd.Services.ValidationService;
+
+public static class ValidationService
 {
-    public class ValidationService : IValidationService
+    public static bool ValidateAddress(string ip, string port)
     {
-        public bool ValidateAddress(string ip ,string port)
-        {
+        return ValidIP(ip) && ValidPort(port);
+    }
 
-            return ValidIP(ip) && ValidPort(port);
-        }
-        private bool ValidIP(string ip)
+    private static bool ValidIP(string ip)
+    {
+        if (ip.Length < 7) return false;
+        IPAddress address;
+        return IPAddress.TryParse(ip, out address) && address.AddressFamily == AddressFamily.InterNetwork;
+    }
+
+    private static bool ValidPort(string port)
+    {
+        if (int.TryParse(port, out int p))
         {
-            return IPAddress.TryParse(ip, out _);
+            return p > 0 && p <= 65535;
         }
-        private bool ValidPort(string port)
-        {
-            int p;
-            return int.TryParse(port, out p) && p > 1 && p < 65535;
-        }
+        return false;
     }
 }

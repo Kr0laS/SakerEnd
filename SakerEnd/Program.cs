@@ -1,7 +1,8 @@
 using CoreWCF;
 using CoreWCF.Configuration;
 using Microsoft.AspNetCore.Identity;
-using SakerEnd.Services.DeviceService;
+using Microsoft.AspNetCore.SignalR;
+using SakerEnd.Services;
 using SakerEnd.Services.ValidationService;
 using System.Web.Services.Description;
 
@@ -10,14 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddServiceModelServices();
+//builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<MarsImplamentation>();
-builder.Services.AddScoped<IValidationService, ValidationService>();
+builder.Services.AddScoped<MarsImplamentation>();
 builder.Services.AddSingleton<DeviceService>();
+//builder.Services.AddSingleton<DevicesNotificationsHub>();
+builder.Services.AddTransient<IDeviceResponseHandler, DeviceResponseHandler>();
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -26,13 +28,11 @@ var app = builder.Build();
 
 app.UseServiceModel(builder =>
 {
-    builder.AddService<MarsImplamentation>((serviceOptions) => { })
-    // Add a BasicHttpBinding at a specific endpoint
+    builder.AddService<MarsImplamentation>()
     .AddServiceEndpoint<MarsImplamentation, SNSR_STDSOAPPort>(new BasicHttpBinding(), "/SNSR_STD-SOAP");
 });
 
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -45,5 +45,6 @@ app.UseHttpsRedirection();
 //app.UseAuthorization();
 
 app.MapControllers();
+//app.MapHub<DevicesNotificationsHub>("/StatusReport");
 
 app.Run();

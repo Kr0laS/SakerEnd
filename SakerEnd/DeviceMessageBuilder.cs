@@ -1,6 +1,6 @@
 ﻿namespace SakerEnd
 {
-    public class DeviceMessageBuilder
+    public static class DeviceMessageBuilder
     {
         public static DeviceConfiguration GetDeviceConfiguration(ConfigurationDto dto)
         {
@@ -16,9 +16,10 @@
                 MessageTypeSpecified = true
             };
         }
+
         public static DeviceSubscriptionConfiguration GetDeviceSubscriptionConfiguration(DeviceIdentificationType devId)
         {
-            DeviceSubscriptionConfiguration devSub = new DeviceSubscriptionConfiguration();
+            DeviceSubscriptionConfiguration devSub = new();
 
             SubscriptionTypeType[] subArr = new SubscriptionTypeType[3];
             subArr[0] = SubscriptionTypeType.TechnicalStatus;
@@ -30,7 +31,7 @@
             devSub.DeviceIdentification = devId;
             devSub.MessageType = MessageType.Request;
             devSub.ProtocolVersion = ProtocolVersionType.Undefined;
-            devSub.RequestorIdentification = "marSplunk";
+            devSub.RequestorIdentification = "Saker";
 
             return devSub;
         }

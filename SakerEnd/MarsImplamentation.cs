@@ -1,15 +1,20 @@
 ﻿using CoreWCF.IdentityModel.Protocols.WSTrust;
-using SakerEnd.Services.DeviceService;
+using SakerEnd.Services;
 
 namespace SakerEnd
 {
     public class MarsImplamentation : SNSR_STDSOAPPort
     {
-        private DeviceService _deviceService;
-        public MarsImplamentation(DeviceService deviceService)
+        #region - - - DI - - -  
+        private readonly IDeviceResponseHandler _responseHandler;
+
+        public MarsImplamentation(DeviceService deviceService, IDeviceResponseHandler responseHandler)
         {
-            _deviceService = deviceService;
+            _responseHandler = responseHandler;
         }
+        #endregion
+
+
         public IAsyncResult BegindoCommandMessage(doCommandMessageRequest request, AsyncCallback callback, object asyncState)
         {
             throw new NotImplementedException();
@@ -48,26 +53,8 @@ namespace SakerEnd
         /// <exception cref="NotImplementedException"></exception>
         public doDeviceConfigurationResponse doDeviceConfiguration(doDeviceConfigurationRequest request)
         {
-            try
-            {
-                var deviceIndex = _deviceService.Devices.FindIndex(t =>
-                t.IP == request.DeviceConfiguration.NotificationServiceIPAddress &&
-                t.Port == request.DeviceConfiguration.NotificationServicePort);
+            _responseHandler.HandleDeviceConfiguration(request);
 
-                if (deviceIndex == -1) throw new Exception("doDeviceConfiguration error");
-                
-                _deviceService.Devices[deviceIndex].Configuration = request.DeviceConfiguration;
-
-                var sub = DeviceMessageBuilder.GetDeviceSubscriptionConfiguration(request.DeviceConfiguration.DeviceIdentification);
-
-                _deviceService.Devices[deviceIndex].Client.BegindoDeviceSubscriptionConfiguration(sub ,null ,null );
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
             return new();
         }
 
@@ -78,12 +65,7 @@ namespace SakerEnd
 
         public doCommandMessageResponse doDeviceStatusReport(doDeviceStatusReportRequest request)
         {
-            
-            var index = _deviceService.Devices.FindIndex(t =>
-            t.Configuration.DeviceIdentification.DeviceName == request.DeviceStatusReport.DeviceIdentification.DeviceName);
-            
-            // need to find a way to send back a response to shoam
-
+            _responseHandler.HandleDeviceStatusReport(request);
             return new();
         }
 
@@ -118,5 +100,6 @@ namespace SakerEnd
         }
         
     }
-    public delegate void ConfigurationCompleted(DeviceStatusReport status);
+    public delegate void StatusCompleted(DeviceStatusReport status, int index);
+    public delegate void ConfigCompleted(DeviceConfiguration configuration,int index);
 }
